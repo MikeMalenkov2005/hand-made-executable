@@ -30,3 +30,11 @@ struc PE_HEADER
     .pe_coff_optional_header:   resb COFF_OPTIONAL_HEADER_size
     .pe_coff_extention_header:  resb COFF_EXTENTION_HEADER_size
 endstruc
+
+struc PE_IMPORT_TABLE_ENTRY
+    .lookup_table:  resd 1
+    .time_date:     resd 1
+    .forward_chain: resd 1
+    .library_name:  resd 1
+    .import_table:  resd 1
+endstruc

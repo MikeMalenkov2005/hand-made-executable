@@ -125,7 +125,7 @@ istruc COFF_SECTION_HEADER
     at COFF_SECTION_HEADER.s_nlnno,   dw 0
     at COFF_SECTION_HEADER.s_flags,   dd 0x40000040
 iend
-align FALIGN
+align FALIGN, db 0
 HEADER_END:
 
 TEXT_SECTION_START:
@@ -143,7 +143,7 @@ TEXT_SECTION_START:
     MessageBoxA: jmp dword [0+RVA(import_address_table.user32)+IMAGE_BASE]
     msg: db "TEST", 0
     TEXT_END:
-align FALIGN
+align FALIGN, db 0
 TEXT_SECTION_END:
 
 IDATA_SECTION_START:
@@ -154,17 +154,21 @@ IDATA_SECTION_START:
             dd RVA(import_names.MessageBoxA), 0
     import_table:
         .kernel32:
-            dd RVA(import_lookup_table.kernel32)
-            dd 0
-            dd 0
-            dd RVA(lib_names.kernel32)
-            dd RVA(import_address_table.kernel32)
+            istruc PE_IMPORT_TABLE_ENTRY
+                at PE_IMPORT_TABLE_ENTRY.lookup_table,  dd RVA(import_lookup_table.kernel32)
+                at PE_IMPORT_TABLE_ENTRY.time_date,     dd 0
+                at PE_IMPORT_TABLE_ENTRY.forward_chain, dd 0
+                at PE_IMPORT_TABLE_ENTRY.library_name,  dd RVA(lib_names.kernel32)
+                at PE_IMPORT_TABLE_ENTRY.import_table,  dd RVA(import_address_table.kernel32)
+            iend
         .user32:
-            dd RVA(import_lookup_table.user32)
-            dd 0
-            dd 0
-            dd RVA(lib_names.user32)
-            dd RVA(import_address_table.user32)
+            istruc PE_IMPORT_TABLE_ENTRY
+                at PE_IMPORT_TABLE_ENTRY.lookup_table,  dd RVA(import_lookup_table.user32)
+                at PE_IMPORT_TABLE_ENTRY.time_date,     dd 0
+                at PE_IMPORT_TABLE_ENTRY.forward_chain, dd 0
+                at PE_IMPORT_TABLE_ENTRY.library_name,  dd RVA(lib_names.user32)
+                at PE_IMPORT_TABLE_ENTRY.import_table,  dd RVA(import_address_table.user32)
+            iend
         .zeros: times 5 dd 0
     import_table_end:
     import_lookup_table:
@@ -183,7 +187,7 @@ IDATA_SECTION_START:
         .kernel32: db "KERNEL32.dll", 0
         .user32: db "User32.dll", 0
     IDATA_END:
-align FALIGN
+align FALIGN, db 0
 IDATA_SECTION_END:
 
 EOF:
