@@ -1,6 +1,6 @@
 org 0
 bits 16
-%include "mz.inc"
+%include "win32/mz.inc"
 
 %define RAW(lbl) (lbl - $$)
 
@@ -47,7 +47,7 @@ bits 32
 %define SRA(lbl)    (RAW(lbl) % FALIGN)
 %define RVA(lbl)    (RAW(lbl) - SRA(lbl)) * (VALIGN / FALIGN) + SRA(lbl)
 
-%include "pe.inc"
+%include "win32/pe.inc"
 
 new_header:
 istruc PE_HEADER

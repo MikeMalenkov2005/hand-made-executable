@@ -1,4 +1,4 @@
-%include "coff.inc"
+%include "win32/coff.inc"
 
 %define PE_DATA_DIRECTORIES 16
 
